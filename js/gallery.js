@@ -66,21 +66,48 @@ const images = [
 
 const galleryList = document.querySelector(".gallery");
 
-const galleryItems = images
-  .map(
-    (image) => `
-  <li class="gallery-item">
-    <a class="gallery-link" href="${image.original}">
-      <img
-        class="gallery-image"
-        src="${image.preview}"
-        data-source="${image.original}"
-        alt="${image.description}"
-      />
-    </a>
-  </li>
-`
-  )
-  .join("");
+// Creating markup for each image
+const galleryItems = images.map((image) => {
+  return `
+      <li class="gallery-item">
+        <a class="gallery-link" href="${image.original}">
+          <img
+            class="gallery-image"
+            src="${image.preview}"
+            data-source="${image.original}"
+            alt="${image.description}"
+          />
+        </a>
+      </li>
+    `;
+});
 
-galleryList.innerHTML = galleryItems;
+// Adding all created items to the gallery list
+galleryList.insertAdjacentHTML("beforeend", galleryItems.join(""));
+
+// Listening for clicks on ul.gallery
+galleryList.addEventListener("click", (event) => {
+  event.preventDefault(); // Disallow the default action
+
+  const target = event.target;
+  const imageLink = target.dataset.source; // Get a link to the large image
+
+  // Checking if the image was actually clicked
+  if (target.classList.contains("gallery-image")) {
+    // Opening a modal window with a large image
+    const lightbox = basicLightbox.create(`
+        <img src="${imageLink}" width="1112" height="640">
+      `);
+    lightbox.show();
+
+    // Listening for the "Escape" key to close the modal window
+    const closeLightbox = (event) => {
+      if (event.key === "Escape") {
+        lightbox.close();
+        window.removeEventListener("keydown", closeLightbox); // Removing the listener when the window is closed
+      }
+    };
+
+    window.addEventListener("keydown", closeLightbox); // Adding a keyboard listener
+  }
+});
