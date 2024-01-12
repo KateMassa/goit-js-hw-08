@@ -67,23 +67,24 @@ const images = [
 const galleryList = document.querySelector(".gallery");
 
 // Creating markup for each image
-const galleryItems = images.map((image) => {
-  return `
-      <li class="gallery-item">
-        <a class="gallery-link" href="${image.original}">
-          <img
-            class="gallery-image"
-            src="${image.preview}"
-            data-source="${image.original}"
-            alt="${image.description}"
-          />
-        </a>
-      </li>
-    `;
-});
+const galleryItems = images
+  .map(
+    (image) => `
+    <li class="gallery-item">
+      <a class="gallery-link" href="${image.original}">
+        <img
+          class="gallery-image"
+          src="${image.preview}"
+          data-source="${image.original}"
+          alt="${image.description}"
+        />
+      </a>
+    </li>
+  `
+  )
+  .join("");
 
-// Adding all created items to the gallery list
-galleryList.insertAdjacentHTML("beforeend", galleryItems.join(""));
+galleryList.innerHTML = galleryItems;
 
 // Listening for clicks on ul.gallery
 galleryList.addEventListener("click", (event) => {
