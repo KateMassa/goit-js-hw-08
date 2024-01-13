@@ -86,12 +86,14 @@ const galleryItems = images
 
 galleryList.innerHTML = galleryItems;
 
-// Listening for clicks on ul.gallery
+// Listening for clicks on ul.gallery and disallowing the default action
 galleryList.addEventListener("click", (event) => {
-  event.preventDefault(); // Disallow the default action
+  event.preventDefault();
 
   const target = event.target;
-  const imageLink = target.dataset.source; // Get a link to the large image
+
+  // Get a link to the large image
+  const imageLink = target.dataset.source;
 
   // Checking if the image was actually clicked
   if (target.classList.contains("gallery-image")) {
@@ -101,14 +103,21 @@ galleryList.addEventListener("click", (event) => {
       `);
     lightbox.show();
 
-    // Listening for the "Escape" key to close the modal window
-    const closeLightbox = (event) => {
-      if (event.key === "Escape") {
-        lightbox.close();
-        window.removeEventListener("keydown", closeLightbox); // Removing the listener when the window is closed
-      }
-    };
+    lightbox.onShow(() => {
+      const closeLightbox = (event) => {
+        if (event.key === "Escape") {
+          lightbox.close();
+        }
+      };
 
-    window.addEventListener("keydown", closeLightbox); // Adding a keyboard listener
+      window.addEventListener("keydown", closeLightbox);
+    });
+
+    // Removing the keyboard event listener when the modal window is closed
+    lightbox.onClose(() => {
+      window.removeEventListener("keydown", closeLightbox);
+    });
+
+    lightbox.show();
   }
 });
