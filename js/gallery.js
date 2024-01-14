@@ -86,6 +86,13 @@ const galleryItems = images
 
 galleryList.innerHTML = galleryItems;
 
+// Define closeLightbox outside the event listener
+const closeLightbox = (event) => {
+  if (event.key === "Escape") {
+    lightbox.close();
+  }
+};
+
 // Listening for clicks on ul.gallery and disallowing the default action
 galleryList.addEventListener("click", (event) => {
   event.preventDefault();
@@ -98,25 +105,20 @@ galleryList.addEventListener("click", (event) => {
   // Checking if the image was actually clicked
   if (target.classList.contains("gallery-image")) {
     // Opening a modal window with a large image
-    const lightbox = basicLightbox.create(`
+    const lightbox = basicLightbox.create(
+      `
         <img src="${imageLink}" width="1112" height="640">
-      `);
-    lightbox.show();
+      `,
+      {
+        onShow: () => {
+          document.addEventListener("keydown", closeLightbox);
+        },
 
-    lightbox.onShow(() => {
-      const closeLightbox = (event) => {
-        if (event.key === "Escape") {
-          lightbox.close();
-        }
-      };
-
-      window.addEventListener("keydown", closeLightbox);
-    });
-
-    // Removing the keyboard event listener when the modal window is closed
-    lightbox.onClose(() => {
-      window.removeEventListener("keydown", closeLightbox);
-    });
+        onClose: () => {
+          document.removeEventListener("keydown", closeLightbox);
+        },
+      }
+    );
 
     lightbox.show();
   }
