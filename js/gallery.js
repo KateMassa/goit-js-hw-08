@@ -86,13 +86,6 @@ const galleryItems = images
 
 galleryList.innerHTML = galleryItems;
 
-// Define closeLightbox outside the event listener
-const closeLightbox = (event) => {
-  if (event.key === "Escape") {
-    lightbox.close();
-  }
-};
-
 // Listening for clicks on ul.gallery and disallowing the default action
 galleryList.addEventListener("click", (event) => {
   event.preventDefault();
@@ -123,3 +116,10 @@ galleryList.addEventListener("click", (event) => {
     lightbox.show();
   }
 });
+
+// Define closeLightbox outside the event listener
+const closeLightbox = (event) => {
+  if (event.key === "Escape") {
+    lightbox.close();
+  }
+};
