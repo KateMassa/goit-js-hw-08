@@ -97,29 +97,31 @@ galleryList.addEventListener("click", (event) => {
 
   // Checking if the image was actually clicked
   if (target.classList.contains("gallery-image")) {
+    // Define closeLightbox outside the event listener
+    let closeModal;
+
     // Opening a modal window with a large image
-    const lightbox = basicLightbox.create(
+    const modal = basicLightbox.create(
       `
         <img src="${imageLink}" width="1112" height="640">
       `,
       {
         onShow: () => {
-          document.addEventListener("keydown", closeLightbox);
+          document.addEventListener("keydown", closeModal);
         },
 
         onClose: () => {
-          document.removeEventListener("keydown", closeLightbox);
+          document.removeEventListener("keydown", closeModal);
         },
       }
     );
 
-    // Define closeLightbox outside the event listener
-    const closeLightbox = (event) => {
+    closeModal = (event) => {
       if (event.key === "Escape") {
-        lightbox.close();
+        modal.close();
       }
     };
 
-    lightbox.show();
+    modal.show();
   }
 });
