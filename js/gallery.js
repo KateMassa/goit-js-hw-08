@@ -113,13 +113,13 @@ galleryList.addEventListener("click", (event) => {
       }
     );
 
+    // Define closeLightbox outside the event listener
+    const closeLightbox = (event) => {
+      if (event.key === "Escape") {
+        lightbox.close();
+      }
+    };
+
     lightbox.show();
   }
 });
-
-// Define closeLightbox outside the event listener
-const closeLightbox = (event) => {
-  if (event.key === "Escape") {
-    lightbox.close();
-  }
-};
